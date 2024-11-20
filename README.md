@@ -43,4 +43,24 @@ Two features to emphasize:
 |    Jest    | ^29.7.3 |
 |  Cypress   | latest  |
 
-... end more can be found within repo.
+... end more can be found within the repo.
+
+## Testing
+
+1. E2E tests can be triggered with command
+
+```sh
+npm run cypress:run
+```
+
+2. Unit tests can be triggered with command
+
+```sh
+npm run unit-test
+```
+
+, or with coverage variant
+
+```sh
+npm run unit-test:coverage
+```

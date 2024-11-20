@@ -1,10 +1,17 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { GameCardComponent } from './game-card/game-card.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RestService } from './_services/rest.service';
 import { firstValueFrom, forkJoin, map, Observable } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   CompoundEntityDTO,
   EntityBattleResult,
@@ -36,7 +43,6 @@ type ResourceKind<T extends EntityType | 'anything' = EntityType | 'anything'> =
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet,
     GameCardComponent,
     MatButtonModule,
     MatIconModule,
@@ -51,6 +57,7 @@ type ResourceKind<T extends EntityType | 'anything' = EntityType | 'anything'> =
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
   store = inject(Store);
@@ -62,6 +69,8 @@ export class AppComponent implements OnInit {
     PlayerSelectors.winningPlayerId
   );
   restService = inject(RestService);
+  #destroyRef = inject(DestroyRef);
+  changeDetectorRef = inject(ChangeDetectorRef);
 
   resourceKindControl: FormControl = new FormControl('anything');
   resourceKinds: Array<ResourceKind> = [
@@ -80,6 +89,7 @@ export class AppComponent implements OnInit {
 
   gamePlayers: Array<PlayerModel> = [];
   winningPlayerId: string | null = null;
+  battleResultClass: [string, string] = ['', ''];
 
   private readonly matDialog = inject(MatDialog);
   private readonly matSnackBar = inject(MatSnackBar);
@@ -110,23 +120,23 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    this.selectRandomEntities().subscribe({
-      next: this.processRandomEntities.bind(this),
-      error: (error: HttpErrorResponse) => {
-        if (error.status === HttpStatusCode.NotFound) {
-          const errorMessage = `Random entity cannot be found. Origin error message: ${error.message}`;
-          console.error('Random entity cannot be found');
-          this.displayErrorMessage(errorMessage);
-        } else {
-          this.displayErrorMessage(error.message);
-        }
+    this.selectRandomEntities()
+      .pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe({
+        next: this.processRandomEntities.bind(this),
+        error: (error: HttpErrorResponse) => {
+          if (error.status === HttpStatusCode.NotFound) {
+            const errorMessage = `Random entity cannot be found. Origin error message: ${error.message}`;
+            console.error('Random entity cannot be found');
+            this.displayErrorMessage(errorMessage);
+          } else {
+            this.displayErrorMessage(error.message);
+          }
 
-        this.isLoading = false;
-      },
-      complete: () => {
-        this.isFirstGame = false;
-      },
-    });
+          this.isLoading = false;
+          this.changeDetectorRef.detectChanges();
+        },
+      });
   }
 
   getBattleResultClass(
@@ -190,15 +200,19 @@ export class AppComponent implements OnInit {
   }
 
   private observePlayers(): void {
-    this.players$.subscribe(players => {
-      this.gamePlayers = players;
-    });
+    this.players$
+      .pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe(players => {
+        this.gamePlayers = players;
+      });
   }
 
   private observeWinningPlayerId(): void {
-    this.winningPlayerId$.subscribe(playerId => {
-      this.winningPlayerId = playerId;
-    });
+    this.winningPlayerId$
+      .pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe(playerId => {
+        this.winningPlayerId = playerId;
+      });
   }
 
   private processRandomEntities(
@@ -223,7 +237,11 @@ export class AppComponent implements OnInit {
       )
     );
     this.entityList = entities;
+    this.battleResultClass = this.entityList.map((entity, index) =>
+      this.getBattleResultClass(entity?.battleResult, this.gamePlayers[index])
+    ) as [string, string];
     this.isFirstGame = false;
     this.isLoading = false;
+    this.changeDetectorRef.detectChanges();
   }
 }

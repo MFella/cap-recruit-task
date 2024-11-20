@@ -39,12 +39,14 @@
           <span>Play again</span>
           }
         </button>
-        <mat-slide-toggle [(ngModel)]="rollUntilSuccess"
+        <mat-slide-toggle [(ngModel)]="rollUntilSuccess" [disabled]="isLoading"
           >Roll until success</mat-slide-toggle
         >
         <mat-form-field class="play-against-form-input">
           <mat-label>Play againt</mat-label>
-          <mat-select [formControl]="resourceKindControl">
+          <mat-select
+            [disabled]="isLoading"
+            [formControl]="resourceKindControl">
             @for (resourceKind of resourceKinds; track resourceKind) {
             <mat-option [value]="resourceKind.value">{{
               resourceKind.label
@@ -60,9 +62,7 @@
   @if (entityList) { @for (entity of entityList; track $index) {
   <div class="rounded-lg bg-gray-100">
     <app-game-card
-      [ngClass]="
-        getBattleResultClass(entity?.battleResult, gamePlayers[$index])
-      "
+      [ngClass]="battleResultClass[$index]"
       [entity]="entity"
       [isFirstGame]="isFirstGame"
       [playerModel]="gamePlayers[$index]" />

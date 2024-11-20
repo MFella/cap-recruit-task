@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { CompoundEntityDTO, EntityType } from '../types/entity.types';
@@ -22,6 +22,7 @@ import { PlayerModel } from '../infrastructure/models/player.model';
   ],
   templateUrl: './game-card.component.html',
   styleUrl: './game-card.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameCardComponent {
   @Input()
