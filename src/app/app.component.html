@@ -24,7 +24,8 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-4">
+      <div
+        class="flex items-center flex-wrap lg:w-auto lg:justify-start w-full justify-center gap-4">
         <button
           class="play-game-button"
           mat-fab
@@ -58,7 +59,7 @@
     </div>
   </div>
 </header>
-<div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8 p-12">
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8 sm:p-12 p-2">
   @if (entityList) { @for (entity of entityList; track $index) {
   <div class="rounded-lg bg-gray-100">
     <app-game-card

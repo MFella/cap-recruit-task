@@ -43,15 +43,14 @@
     <mat-card-subtitle>Kind: {{ entity.kind }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content class="h-[500px] overflow-y-scroll">
-    <p
-      class="sm:flex sm:justify-between sm:items-center flex-col h-full !contents">
+    <p class="flex justify-between items-center flex-col h-full">
       <span
-        class="sm:w-full my-2 sm:flex justify-between p-2 bg-white-0 border-2 border-gray-50 rounded-xl"
+        class="w-full my-2 flex justify-between p-2 bg-white-0 border-2 border-gray-50 rounded-xl"
         *ngFor="let entries of getEntityEntries()">
-        <span class="entity-entry-container sm:max-w-40 truncate">{{
+        <span class="entity-entry-container max-w-40 truncate">{{
           (entries[0][0].toUpperCase() + entries[0].slice(1)).replace('_', ' ')
         }}</span>
-        <strong class="sm:max-w-40 truncate">
+        <strong class="max-w-[30vw] sm:max-w-40 truncate">
           @if(['Edited', 'Created'].includes((entries[0][0].toUpperCase() +
           entries[0].slice(1)).replace('_', ' ').trim())) {
           {{ entries[1] | date : 'dd/MM/yyyy' }}
