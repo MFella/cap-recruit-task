@@ -1,27 +1,46 @@
 # CapRecruitTask
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.11.
+Project was created on recruitment task purpose.
+Main aim is to draw two entites from special [StarWars api](https://www.swapi.tech/) and then - based
+on common attribute - emerge the winner.
 
-## Development server
+## Rules of game
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+There are several rules of that game:
 
-## Code scaffolding
+1. There are only two players (second is enemy) represented by left and right side ("game cards")
+2. Player has got a score (visible on top of "game card")
+3. The cards are compared on the basis of a common attribute - these are numbers, but also strings.
+   At this point of time, there are only two entities that can be fetched (and then compared):
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **people** - there are compared based on **mass** attribute;
+- **starships** - there are compared based on **crew** attribute;
 
-## Build
+4. Icons: 🏆, 👎, 🏳 are indicating, how many wins/losts/ties player has
+5. The overall winner is determined by the balance of wins and draws - one win is three points, while a draw is one point
+6. Overall winner of "war" (series of battles) is indicated by yellow background
+7. Winner of single battle is marked with 'tick'(✔) icon (and also **Winner** badge), while Loser - cross (❌) icon
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Issues
 
-## Running unit tests
+1. Not found entities - Handling api calls can cause some unpredictable behaviour. For example, entity with 'randomized id' could not be found. Round won't be started, when at least one of game entity won't be fetched - user should see in that scenario error message on the below of screen.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Features
 
-## Running end-to-end tests
+Two features to emphasize:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+1. **Roll until success** - User can turn on/off "Roll until success" toggle. When turned on, application will try to fetch random entities till success. This is more convenient than constantly clicking the “Play Again” button.
+2. **Choose of what the user will play against** - Select allows to change the type of the second card. The default value is "anything" (it can be both - starships and people). It means that second card will be always in that type setted up in that select.
 
-## Further help
+## Included Technologies
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+| Technology | Version |
+| :--------: | :-----: |
+|  Angular   | ^17.3.0 |
+|    NGXS    | ^18.1.5 |
+|    RxJS    | ~7.8.0  |
+|  Tailwind  | ^3.4.15 |
+|    Jest    | ^29.7.3 |
+|  Cypress   | latest  |
+
+... end more can be found within repo.
