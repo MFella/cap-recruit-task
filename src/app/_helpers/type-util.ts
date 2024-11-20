@@ -6,7 +6,7 @@ export class TypeUtil {
   }
 
   static isPersonDTO(
-    object: Record<string, string | number>
+    object: Record<string, string | number | null | null[]>
   ): object is PersonDTO {
     return (
       'height' in object &&
