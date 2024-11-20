@@ -1,0 +1,35 @@
+::ng-deep {
+  .mat-mdc-card-header-text {
+    @apply w-full;
+  }
+}
+
+:host {
+  &.overall-winner {
+    .result-header {
+      @apply bg-yellow-50;
+      border-top-left-radius: 0.5rem;
+      border-top-right-radius: 0.5rem;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply mt-4;
+  box-shadow: inset 0 0 2px grey;
+  border-radius: 1.4rem;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-indigo-200 rounded-xl;
+}
+
+.mat-badge-content {
+  @apply flex items-center justify-center rounded-xl bg-teal-500;
+  width: 4rem !important;
+  line-height: 40px;
+}

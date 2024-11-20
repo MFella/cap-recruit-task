@@ -1,0 +1,22 @@
+// :host {
+//   @apply block;
+//   background: url('https://c4.wallpaperflare.com/wallpaper/356/487/776/star-wars-background-darth-vader-darth-vader-wallpaper-preview.jpg')
+//     no-repeat center center !important;
+//   background-size: cover !important;
+// }
+
+::ng-deep {
+  .mdc-button__label {
+    display: flex !important;
+    align-items: center;
+    span {
+      @apply pl-1;
+    }
+  }
+
+  .play-against-form-input {
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none !important;
+    }
+  }
+}

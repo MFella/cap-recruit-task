@@ -1,1 +1,39 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@include mat.core();
+
+$cap-recruit-task-primary: mat.define-palette(mat.$indigo-palette);
+$cap-recruit-task-accent: mat.define-palette(
+  mat.$pink-palette,
+  A200,
+  A100,
+  A400
+);
+
+$cap-recruit-task-warn: mat.define-palette(mat.$red-palette);
+
+$cap-recruit-task-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $cap-recruit-task-primary,
+      accent: $cap-recruit-task-accent,
+      warn: $cap-recruit-task-warn,
+    ),
+    typography: mat.define-typography-config(),
+    density: 0,
+  )
+);
+
+@include mat.all-component-themes($cap-recruit-task-theme);
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}

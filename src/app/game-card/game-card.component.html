@@ -1,0 +1,110 @@
+@if (entity) {
+<div class="result-header flex">
+  <p
+    matTooltip="Won"
+    matTooltipPosition="above"
+    class="hover:!cursor-default text-center w-full p-2">
+    🏆: {{ playerModel?.roundWons }}
+  </p>
+  <p
+    matTooltip="Lost"
+    matTooltipPosition="above"
+    class="hover:!cursor-default text-center w-full p-2">
+    👎: {{ playerModel?.roundLost }}
+  </p>
+  <p
+    matTooltip="Tie"
+    matTooltipPosition="above"
+    class="hover:!cursor-default text-center w-full p-2">
+    🏳: {{ playerModel?.roundTied }}
+  </p>
+</div>
+<mat-card appearance="outlined">
+  <mat-card-header
+    class="!pb-4 border-b-2 border-indigo-50 rounded-xl !flex shadow-md">
+    <mat-card-title class="!flex justify-between items-center w-full">
+      <div class="entity-name">
+        <span
+          matBadge="{{ entity.battleResult === 1 ? 'Winner!' : null }}"
+          matBadgeOverlap="false"
+          >{{ entity.name }}</span
+        >
+      </div>
+      @switch (entity.battleResult) { @case (1) {
+      <mat-icon class="text-teal-500 scale-150">check</mat-icon>
+      } @case (0) {
+      <mat-icon class="text-gray-500 scale-150">outlined_flag</mat-icon>
+      } @case (-1) {
+      <mat-icon class="text-rose-500 scale-150">close</mat-icon>
+      } }
+    </mat-card-title>
+    <mat-card-subtitle>Kind: {{ entity.kind }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="h-[500px] overflow-y-scroll">
+    <p
+      class="sm:flex sm:justify-between sm:items-center flex-col h-full !contents">
+      <span
+        class="sm:w-full my-2 sm:flex justify-between p-2 bg-white-0 border-2 border-gray-50 rounded-xl"
+        *ngFor="let entries of getEntityEntries()">
+        <span class="entity-entry-container sm:max-w-40 truncate">{{
+          (entries[0][0].toUpperCase() + entries[0].slice(1)).replace('_', ' ')
+        }}</span>
+        <strong class="sm:max-w-40 truncate">
+          @if(['Edited', 'Created'].includes((entries[0][0].toUpperCase() +
+          entries[0].slice(1)).replace('_', ' ').trim())) {
+          {{ entries[1] | date : 'dd/MM/yyyy' }}
+          } @else {
+          {{ entries[1] }}
+          }
+        </strong>
+      </span>
+    </p>
+  </mat-card-content>
+</mat-card>
+} @else {
+<mat-card appearance="outlined">
+  <div class="flex">
+    <p
+      matTooltip="Won"
+      matTooltipPosition="above"
+      class="hover:!cursor-default text-center w-full p-2">
+      🏆: 0
+    </p>
+    <p
+      matTooltip="Lost"
+      matTooltipPosition="above"
+      class="hover:!cursor-default text-center w-full p-2">
+      👎: 0
+    </p>
+    <p
+      matTooltip="Tie"
+      matTooltipPosition="above"
+      class="hover:!cursor-default text-center w-full p-2">
+      🏳: 0
+    </p>
+  </div>
+  @if (isFirstGame) {
+  <div
+    class="before-start-overlay-container absolute w-full h-full flex justify-center items-center backdrop-blur">
+    <h2 class="p-4 text-center w-full">Game is not started</h2>
+  </div>
+  }
+  <mat-card-header
+    class="!pb-4 border-b-2 border-indigo-50 rounded-xl shadow-md">
+    <mat-card-title>Example name</mat-card-title>
+    <mat-card-subtitle>Example kind</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="h-[500px] overflow-y-scroll">
+    <p class="sm:flex sm:justify-between sm:items-center flex-col h-full">
+      <span
+        class="sm:w-full my-2 sm:flex justify-between p-2 border-2 border-gray-50 rounded-xl"
+        *ngFor="let mockEntry of randomSkeletonText">
+        <span class="sm:max-w-40 truncate">{{ mockEntry }}</span>
+        <strong class="sm:max-w-40 truncate">
+          {{ mockEntry }}
+        </strong>
+      </span>
+    </p>
+  </mat-card-content>
+</mat-card>
+}
